@@ -12,6 +12,25 @@ angular.module('firstApp.services', [])
   };
 })
 
+.factory('dateService', function($filter) {
+  var currentDate = function() {
+    var d = new Date();
+    var date = $filter('date')(d, 'yyyy-MM-dd');
+    return date;
+  };
+
+  var oneYearAgoDate = function() {
+    var d = new Date(new Date().setDate(new Date().getDate() - 365));
+    var date = $filter('date')(d, 'yyyy-MM-dd');
+    return date;
+  };
+
+  return {
+    currentDate: currentDate,
+    oneYearAgoDate: oneYearAgoDate
+  };
+})
+
 .factory('stockDataService', function($q, $http, encodeURIService) {
 // $q - this service is an implementation of a promise. It help executing async code;
 // $http - service for doing requests;
