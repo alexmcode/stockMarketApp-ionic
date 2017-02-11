@@ -6,7 +6,7 @@ angular.module('firstApp.services', [])
 .factory('encodeURIService', function() {
   return {
     encode: function(string) {
-      console.log(string);
+      // console.log(string);
       return encodeURIComponent(string).replace(/\"/g, "%22").replace(/\ /g, "%20").replace(/[!'()]/g, escape);
     }
   };
@@ -44,7 +44,7 @@ angular.module('firstApp.services', [])
     query = 'select * from yahoo.finance.quotes where symbol IN ("' + ticker + '")',
     url = 'https://query.yahooapis.com/v1/public/yql?q=' + encodeURIService.encode(query) + '&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=';
 
-    console.log(url);
+    // console.log(url);
 
     $http.get(url)
       .success(function(json) {
@@ -84,5 +84,65 @@ angular.module('firstApp.services', [])
     getDetailsData: getDetailsData
   };
   // The service will return a promise, that will return a valid/not valid result
+
+})
+
+.factory('chartDataService', function($q, $http, encodeURIService) {
+
+  var getHistoricalData = function(ticker, fromDate, todayDate) {
+
+    var deferred = $q.defer(),
+    query = 'select * from yahoo.finance.historicaldata where symbol = "' + ticker + '" and startDate = "' + fromDate + '" and endDate = "' + todayDate + '"',
+    url = 'https://query.yahooapis.com/v1/public/yql?q=' + encodeURIService.encode(query) + '&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=';
+
+    $http.get(url)
+      .success(function(json) {
+        console.log(json);
+        var jsonData = json.query.results.quote;
+
+        var priceData = [],
+        volumeData = [];
+
+        jsonData.forEach(function(dayDataObject) {
+          var dateToMillis = dayDataObject.Date,
+          date = Date.parse(dateToMillis),
+          price = parseFloat(Math.round(dayDataObject.Close * 100) / 100).toFixed(3),
+          volume = dayDataObject.Volume,
+
+          volumeDatum = '[' + date + ',' + volume + ']',
+          priceDatum = '[' + date + ',' + price + ']';
+
+          //console.log(volumeDatum, priceDatum);
+
+          volumeData.unshift(volumeDatum);
+          priceData.unshift(priceDatum);
+
+        });
+
+        var formattedChartData =
+        '[{' +
+          '"key":' + '"volume",' +
+          '"bar":' + '"true",' +
+          '"values":' + '[' + volumeData + ']' +
+          '},' +
+        '{' +
+          '"key":' + '"' + ticker + '",' +
+          '"values":' + '[' + priceData + ']' +
+        '}]';
+
+        deferred.resolve(formattedChartData);
+      })
+      .error(function(error) {
+        console.log('Chart Data Error: ' + error);
+        deferred.reject();
+      });
+
+      return deferred.promise;
+
+  };
+
+  return {
+    getHistoricalData: getHistoricalData
+  };
 
 });
