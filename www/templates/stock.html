@@ -31,7 +31,8 @@
   <img ng-if="chartView == 1" ng-src="http://chart.finance.yahoo.com/z?s={{ticker}}&t=1d&q=1&1=on&z=m&a=vm" style="wigth: 100%">
   <img ng-if="chartView == 2" ng-src="http://chart.finance.yahoo.com/z?s={{ticker}}&t=5d&q=1&1=on&z=m&a=vm" style="wigth: 100%">
   <img ng-if="chartView == 3" ng-src="http://chart.finance.yahoo.com/z?s={{ticker}}&t=3m&q=1&1=on&z=m&a=vm" style="wigth: 100%">
-  <img ng-if="chartView == 4" ng-src="http://chart.finance.yahoo.com/z?s={{ticker}}&t=1y&q=1&1=on&z=m&a=vm" style="wigth: 100%">
+  <!-- 1vh is 1% of the view/window hight -->
+  <div ng-if="chartView == 4" nv-chart="chartOptions" style="height: 70vh;"></div>
   <img ng-if="chartView == 5" ng-src="http://chart.finance.yahoo.com/z?s={{ticker}}&t=my&q=1&1=on&z=m&a=vm" style="wigth: 100%">
 
     <div class="card">

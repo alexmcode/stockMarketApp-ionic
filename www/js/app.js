@@ -1,5 +1,7 @@
 angular.module('firstApp', [
   'ionic',
+  'nvd3',
+  'nvChart',
   'firstApp.controllers',
   'firstApp.services',
   'firstApp.filters',
