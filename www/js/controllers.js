@@ -47,7 +47,15 @@ function($scope) {
     {ticker: "AAPL"},
     {ticker: "GPRO"},
     {ticker: "FB"},
-    {ticker: "NFLX"}
+    {ticker: "NFLX"},
+    {ticker: "TSLA"},
+    {ticker: "BRK-A"},
+    {ticker: "INTC"},
+    {ticker: "MSFT"},
+    {ticker: "GE"},
+    {ticker: "BAC"},
+    {ticker: "C"},
+    {ticker: "T"}
   ];
 }])
 

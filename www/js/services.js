@@ -97,7 +97,7 @@ angular.module('firstApp.services', [])
 
     $http.get(url)
       .success(function(json) {
-        console.log(json);
+        // console.log(json);
         var jsonData = json.query.results.quote;
 
         var priceData = [],
