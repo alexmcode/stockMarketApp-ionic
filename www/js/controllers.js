@@ -145,7 +145,7 @@ function($scope, $stateParams, $window, stockDataService, dateService, chartData
 	$scope.chartOptions = {
     chartType: 'linePlusBarWithFocusChart',
     data: 'myData',
-    margin: {top: 15, right: 40, bottom: marginButton, left: 70},
+    margin: {top: 15, right: 0, bottom: marginButton, left: 0},
     interpolate: "cardinal",
     useInteractiveGuideline: false,
     yShowMaxMin: false,
@@ -160,7 +160,10 @@ function($scope, $stateParams, $window, stockDataService, dateService, chartData
     y2AxisTickFormat: y2TickFormat,
     y3AxisTickFormat: y3TickFormat,
     y4AxisTickFormat: y4TickFormat,
-    transitionDuration: 500
+    transitionDuration: 500,
+    y1AxisLabel: 'Price',
+    y3AxisLabel: 'Volume',
+    noData: 'Loading data...'
 	};
 
 }]);
