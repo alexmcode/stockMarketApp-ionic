@@ -1,5 +1,6 @@
 angular.module('firstApp', [
   'ionic',
+  'angular-cache',
   'nvd3',
   'nvChart',
   'firstApp.controllers',
