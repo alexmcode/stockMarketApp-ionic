@@ -103,7 +103,7 @@ angular.module('firstApp.services', [])
     chartDataCache = CacheFactory('chartDataCache', {
       maxAge: 60 * 60 * 8 * 1000,
       deleteOnExpire: 'aggressive',
-      storageModel: 'localStorage'
+      storageMode: 'localStorage'
     });
   }
   else {
@@ -117,10 +117,10 @@ angular.module('firstApp.services', [])
   var stockDetailsCache;
 
   if (!CacheFactory.get('stockDetailsCache')) {
-    stockDetailsCache = new CacheFactory('stockDetailsCache', {
-      maxAge: 60  * 1000,
+    stockDetailsCache = CacheFactory('stockDetailsCache', {
+      maxAge: 60 * 1000,
       deleteOnExpire: 'aggressive',
-      storageModel: 'localStorage'
+      storageMode: 'localStorage'
     });
   }
   else {
@@ -273,6 +273,80 @@ angular.module('firstApp.services', [])
     }
   };
 
+})
+
+// Insert into myStocksCache an array with the default/followed stocks
+.factory('fillMyStocksCacheService', function(CacheFactory) {
+
+  var myStocksCache;
+
+  if(!CacheFactory.get('myStocksCache')) {
+    myStocksCache = CacheFactory('myStocksCache', {
+      storageMode: 'localStorage'
+    });
+  }
+  else {
+    myStocksCache = CacheFactory('myStocksCache');
+  }
+
+  var fillMyStocksCache = function() {
+    var myStocksArray = [
+      {ticker: "AAPL"},
+      {ticker: "GPRO"},
+      {ticker: "FB"},
+      {ticker: "NFLX"},
+      {ticker: "TSLA"},
+      {ticker: "BRK-A"},
+      {ticker: "INTC"},
+      {ticker: "MSFT"},
+      {ticker: "GE"},
+      {ticker: "BAC"},
+      {ticker: "C"},
+      {ticker: "T"}
+    ];
+
+    myStocksCache.put('myStocks', myStocksArray);
+  };
+
+  return {
+    fillMyStocksCache: fillMyStocksCache
+  };
+})
+
+.factory('myStocksCacheService', function(CacheFactory) {
+
+  var myStocksCache = CacheFactory.get('myStocksCache');
+
+  return myStocksCache;
+
+})
+
+.factory('myStocksArrayService', function(fillMyStocksCacheService, myStocksCacheService) {
+
+  if (!myStocksCacheService.info('myStocks')) {
+    fillMyStocksCacheService.fillMyStocksCache();
+  }
+
+  var myStocks = myStocksCacheService.get('myStocks');
+
+  return myStocks;
+
+})
+
+.factory('followStockService', function() {
+
+  return {
+
+    follow: function(ticker) {
+
+    },
+    unfollow: function(ticker) {
+
+    },
+    checkFollowing: function(ticker) {
+
+    }
+  };
 })
 
 ;

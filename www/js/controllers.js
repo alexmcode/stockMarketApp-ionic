@@ -41,22 +41,12 @@ angular.module('firstApp.controllers', [])
   };
 })
 
-.controller('MyStocksCtrl', ['$scope',
-function($scope) {
-  $scope.myStocksArray = [
-    {ticker: "AAPL"},
-    {ticker: "GPRO"},
-    {ticker: "FB"},
-    {ticker: "NFLX"},
-    {ticker: "TSLA"},
-    {ticker: "BRK-A"},
-    {ticker: "INTC"},
-    {ticker: "MSFT"},
-    {ticker: "GE"},
-    {ticker: "BAC"},
-    {ticker: "C"},
-    {ticker: "T"}
-  ];
+.controller('MyStocksCtrl', ['$scope', 'myStocksArrayService',
+function($scope, myStocksArrayService) {
+
+  // myStocksArrayService - returns default ticker object
+  $scope.myStocksArray = myStocksArrayService;
+  // console.log(myStocksArrayService);
 }])
 
 .controller('StockCtrl', ['$scope', '$stateParams', '$window', '$ionicPopup', 'stockDataService', 'dateService', 'chartDataService', 'notesService', 'newsService',
