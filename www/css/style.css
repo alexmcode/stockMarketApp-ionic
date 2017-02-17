@@ -1,3 +1,18 @@
+/* Search */
+
+#search {
+  background-color: rgba(20, 20, 20, .975);
+}
+
+#search .search-input {
+  background-color: rgba(255, 255, 255,.1);
+}
+
+#search input {
+  color: #fff;
+}
+
+
 /* News card */
 
 #stock-news .icon {

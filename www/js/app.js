@@ -45,6 +45,16 @@ angular.module('firstApp', [
     }
   })
 
+  .state('app.preferences', {
+    url: '/preferences',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/preferences.html',
+        controller: 'PreferencesCtrl'
+      }
+    }
+  })
+
   .state('app.stock', {
     url: '/:stockTicker',
     views: {
@@ -54,6 +64,8 @@ angular.module('firstApp', [
       }
     }
   });
+
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/my-stocks');
 });
