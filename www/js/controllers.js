@@ -12,12 +12,32 @@ angular.module('firstApp.controllers', [])
     console.log("AICI");
 }])
 
-.controller('MyStocksCtrl', ['$scope', 'myStocksArrayService',
-function($scope, myStocksArrayService) {
+.controller('MyStocksCtrl', ['$scope', 'myStocksArrayService', 'stockDataService', 'stockPriceCacheService', 'followStockService',
+function($scope, myStocksArrayService, stockDataService, stockPriceCacheService, followStockService) {
+
+  $scope.$on("$ionicView.afterEnter", function() {
+    $scope.getMyStocksData();
+  });
 
   // myStocksArrayService - returns default ticker object
-  $scope.myStocksArray = myStocksArrayService;
-  // console.log(myStocksArrayService);
+  $scope.getMyStocksData = function() {
+
+    myStocksArrayService.forEach(function(stock) {
+      var promise = stockDataService.getPriceData(stock.ticker);
+      $scope.myStocksData = [];
+      promise.then(function(data) {
+        $scope.myStocksData.push(stockPriceCacheService.get(data.symbol));
+      });
+    });
+
+    $scope.$broadcast('scroll.refreshComplete');
+  };
+
+  // $scope.myStocksArray = myStocksArrayService;
+  $scope.unfollowStock = function(ticker) {
+    followStockService.unfollow(ticker);
+    $scope.getMyStocksData();
+  };
 }])
 
 .controller('StockCtrl', ['$scope', '$stateParams', '$window', '$ionicPopup', 'stockDataService', 'dateService', 'chartDataService', 'notesService', 'newsService', 'followStockService',

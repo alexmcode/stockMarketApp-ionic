@@ -75,7 +75,7 @@ angular.module('firstApp.services', [])
   };
 })
 
-.factory('stockDataService', function($q, $http, encodeURIService, stockDetailsCacheService) {
+.factory('stockDataService', function($q, $http, encodeURIService, stockDetailsCacheService, stockPriceCacheService) {
 // $q - this service is an implementation of a promise. It help executing async code;
 // $http - service for doing requests;
 
@@ -115,6 +115,7 @@ angular.module('firstApp.services', [])
 
   var getPriceData = function(ticker) {
     var deferred = $q.defer(),
+    cacheKey = ticker,
     url = "http://finance.yahoo.com/webservice/v1/symbols/" + ticker + "/quote?format=json&view=detail";
     // var deferred will contain an object that can resolve or reject the current promise
 
@@ -122,6 +123,7 @@ angular.module('firstApp.services', [])
       .success(function(json) {
           var jsonData = json.list.resources[0].resource.fields;
           deferred.resolve(jsonData);
+          stockPriceCacheService.put(cacheKey, jsonData);
       })
       .error(function(error) {
         console.log("Price data error: " + error);
@@ -174,7 +176,24 @@ angular.module('firstApp.services', [])
   return stockDetailsCache;
 })
 
-.factory('chartDataService', function($q, $http, encodeURIService, chartDataCacheService) {
+.factory('stockPriceCacheService', function(CacheFactory) {
+  var stockPriceCache;
+
+  if (!CacheFactory.get('stockPriceCache')) {
+    stockPriceCache = CacheFactory('stockPriceCache', {
+      maxAge: 5 * 1000,
+      deleteOnExpire: 'aggressive',
+      storageMode: 'localStorage'
+    });
+  }
+  else {
+    stockPriceCache = CacheFactory.get('stockPriceCache');
+  }
+
+  return stockPriceCache;
+})
+
+.factory('chartDataService', function($q, $http, encodeURIService, chartDataCacheService, stockPriceCacheService) {
 
   var getHistoricalData = function(ticker, fromDate, todayDate) {
 
