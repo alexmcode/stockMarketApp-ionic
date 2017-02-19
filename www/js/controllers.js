@@ -13,7 +13,7 @@ angular.module('firstApp.controllers', [])
 }])
 
 .controller('MyStocksCtrl', ['$scope', 'myStocksArrayService', 'stockDataService', 'stockPriceCacheService', 'followStockService',
-function($scope, myStocksArrayService, stockDataService, stockPriceCacheService, followStockService) {
+  function($scope, myStocksArrayService, stockDataService, stockPriceCacheService, followStockService) {
 
   $scope.$on("$ionicView.afterEnter", function() {
     $scope.getMyStocksData();
@@ -41,7 +41,7 @@ function($scope, myStocksArrayService, stockDataService, stockPriceCacheService,
 }])
 
 .controller('StockCtrl', ['$scope', '$stateParams', '$window', '$ionicPopup', 'stockDataService', 'dateService', 'chartDataService', 'notesService', 'newsService', 'followStockService',
-function($scope, $stateParams, $window, $ionicPopup, stockDataService, dateService, chartDataService, notesService, newsService, followStockService) {
+  function($scope, $stateParams, $window, $ionicPopup, stockDataService, dateService, chartDataService, notesService, newsService, followStockService) {
 
   $scope.ticker = $stateParams.stockTicker;
   $scope.chartView = 4;
@@ -262,7 +262,7 @@ function($scope, $stateParams, $window, $ionicPopup, stockDataService, dateServi
 }])
 
 .controller('SearchCtrl', ['$scope', '$state', 'modalService', 'searchService',
-function($scope, $state, modalService, searchService) {
+  function($scope, $state, modalService, searchService) {
 
   $scope.closeModal = function() {
     modalService.closeModal();
@@ -284,6 +284,21 @@ function($scope, $state, modalService, searchService) {
     modalService.closeModal();
     $state.go('app.stock', {stockTicker: ticker});
   };
+
+}])
+
+.controller('LoginSignupCtrl', ['$scope', 'modalService', 'userServce',
+  function($scope, modalService, userServce) {
+
+    $scope.user = {email: '', password: ''};
+
+    $scope.closeModal = function() {
+      modalService.closeModal();
+    };
+
+    $scope.signup = function(user) {
+      userServce.signup(user);
+    };
 
 }])
 

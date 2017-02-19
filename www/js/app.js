@@ -1,5 +1,6 @@
 angular.module('firstApp', [
   'ionic',
+  'firebase',
   'angular-cache',
   'nvd3',
   'nvChart',

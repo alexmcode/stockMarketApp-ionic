@@ -12,6 +12,73 @@ angular.module('firstApp.services', [])
   };
 })
 
+.constant('FIREBASE_URL', 'https://firstappionic-d7c91.firebaseio.com')
+
+.factory('firebaseRef', function($firebase, FIREBASE_URL) {
+
+  var config = {
+    apiKey: "AIzaSyCj1fDqGPSAcCPW0yYDH2lk9Dgy_vvfbkU",
+    authDomain: "firstappionic-d7c91.firebaseapp.com",
+    databaseURL: "https://firstappionic-d7c91.firebaseio.com",
+    storageBucket: "firstappionic-d7c91.appspot.com",
+    messagingSenderId: "437025536494"
+  };
+  firebase.initializeApp(config);
+
+  // Returns a Reference to the Query's location.
+  var firebaseRef = firebase.database().ref();
+
+  return firebaseRef;
+
+})
+
+.factory('userServce', function(firebaseRef) {
+
+  var login = function(user) {
+    firebase.auth().signInWithEmailAndPassword(user.email, user.password).catch(function(error) {
+
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log("Error logging in user: " + errorCode + ': ' + errorMessage);
+
+    });
+  };
+
+  var signup = function(user) {
+
+    // firebaseRef.createUser({
+    //   email    : user.email,
+    //   password : user.password
+    // }, function(error, userData) {
+    //   if (error) {
+    //     console.log("Error creating user:", error);
+    //   } else {
+    //     console.log("Successfully created user account with uid:", userData.uid);
+    //   }
+    // });
+
+    firebase.auth().createUserWithEmailAndPassword(user.email, user.password).catch(function(error) {
+
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log("Error creating user: " + errorCode + ': ' + errorMessage);
+    }
+  );
+
+  };
+
+  var logout = function(user) {
+
+  };
+
+  return {
+    login: login,
+    signup: signup,
+    logout: logout
+  };
+
+})
+
 .service('modalService', function($ionicModal) {
 
   this.openModal = function(id) {
@@ -29,16 +96,20 @@ angular.module('firstApp.services', [])
     }
     else if (id == 2) {
       $ionicModal.fromTemplateUrl('templates/login.html', {
-        scope: $scope
+        scope: null,
+        controller: 'LoginSignupCtrl'
       }).then(function(modal) {
-        $scope.modal = modal;
+        _this.modal = modal;
+        _this.modal.show();
       });
     }
     else if (id == 3) {
-      $ionicModal.fromTemplateUrl('templates/login.html', {
-        scope: $scope
+      $ionicModal.fromTemplateUrl('templates/signup.html', {
+        scope: null,
+        controller: 'LoginSignupCtrl'
       }).then(function(modal) {
-        $scope.modal = modal;
+        _this.modal = modal;
+        _this.modal.show();
       });
     }
 
@@ -75,9 +146,9 @@ angular.module('firstApp.services', [])
   };
 })
 
-.factory('stockDataService', function($q, $http, encodeURIService, stockDetailsCacheService, stockPriceCacheService) {
 // $q - this service is an implementation of a promise. It help executing async code;
 // $http - service for doing requests;
+.factory('stockDataService', function($q, $http, encodeURIService, stockDetailsCacheService, stockPriceCacheService) {
 
   var getDetailsData = function(ticker) {
     var deferred = $q.defer(),
