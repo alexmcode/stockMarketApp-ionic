@@ -4,4 +4,4 @@ Below you can see the features that the app has and what elements I used to buil
 
 # Thing I worked with in this project
 - Ionic project structure
-⋅⋅⋅the project has only five main JS files
+...the project has only five main JS files
