@@ -1,4 +1,5 @@
 # stockMarketApp-ionic
+
 A simple stock market display for testing ionic purposes.
 Below you can see the features that the app has and what elements I used to build them:
 
