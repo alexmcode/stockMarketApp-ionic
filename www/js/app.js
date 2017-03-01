@@ -1,5 +1,6 @@
 angular.module('firstApp', [
   'ionic',
+  'ngCordova',
   'firebase',
   'angular-cache',
   'nvd3',
